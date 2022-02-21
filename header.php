@@ -34,6 +34,7 @@ EOD;
       </a>
       <ul class="dropdown-menu dropdown-menu-end">
         <li><a class="dropdown-item" href="/$index_uri[1]/profile">Profile</a></li>
+        <li><a class="dropdown-item" href="/$index_uri[1]/change-password">Update Password</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="/$index_uri[1]/logout">Logout</a></li>
       </ul>

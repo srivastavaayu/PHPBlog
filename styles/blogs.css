@@ -1,0 +1,8 @@
+.blogContainer {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #000;
+  margin: 5px 2vw;
+  padding: 1vw 1vw;
+  border-radius: 10px;
+}
