@@ -1,0 +1,20 @@
+body h1, body h2, body h3, body h4, body h5, body h6, body p, body th, body td, body small {
+  color: #fff !important;
+}
+
+body input, body textarea {
+  background-color: #B1D0E0 !important;
+}
+
+.background-wallpaper {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background: url("../assets/background-wallpaper.jpg") repeat;
+  filter: blur(3px) brightness(0.9);
+  z-index: -1;
+}
+
+.bg-dark {
+  background: linear-gradient(to right, #1A374D, #406882) !important;
+}

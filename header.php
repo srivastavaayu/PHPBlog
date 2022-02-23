@@ -1,9 +1,9 @@
 <?php
-require_once("connect.php");
+require_once("session.php");
 echo <<<EOD
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand navbar__title" href="/$index_uri[1]">PHP Blog</a>
+    <a class="navbar-brand navbar__title" href="/$index_uri[1]">&lt; PHP Blog /&gt;</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar__menu">
       <span class="navbar-toggler-icon"></span>
     </button>

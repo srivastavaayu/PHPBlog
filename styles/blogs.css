@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border: 1px solid #000;
+  border: 3px solid #000;
   margin: 5px 2vw;
   padding: 1vw 1vw;
   border-radius: 10px;
@@ -13,13 +13,17 @@
 }
 
 .blogContentContainer {
-  border: 1px dashed #000;
+  border: 3px solid #000;
   border-radius: 10px;
   min-height: 50vh;
+  margin-bottom: 5vw !important;
 }
 
 .commentContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   padding: 1vw;
-  border: 1px solid #ced4da;
+  border: 2px solid #ced4da;
   border-radius: 5px;
 }

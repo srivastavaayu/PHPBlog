@@ -1,28 +1,9 @@
 <?php
-  require_once("connect.php");
+
+  require_once("session.php");
+  require_once("./queries/users-table.php");
   require_once("redirect.php");
 
-  $dbname = "PHPBlog";
-
-  $conn = new mysqli($servername, $username, $password, $dbname);
-
-  $sql = "CREATE TABLE IF NOT EXISTS Users (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  fullname VARCHAR(60) NOT NULL,
-  email VARCHAR(60),
-  username VARCHAR(60),
-  password VARCHAR(255),
-  last_activity_time INT(12) UNSIGNED,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  )";
-
-  if ($conn->query($sql) === TRUE) {
-  } else {
-    echo "Error creating table: " . $conn->error;
-  }
-
-  $loggedInUser = $_SESSION["LOGIN_USER"];
-  // $loggedInUser = $_COOKIE["LOGIN_USER"];
 
   $info = "";
 
@@ -37,14 +18,13 @@
       echo '<script>alert("New password does not match re-entered password.")</script>';
     }
     else {
-      $sql = "SELECT id, password FROM Users";
-      $result = $conn->query($sql);
-      if($result->num_rows>0) {
-        while($row = $result->fetch_assoc()) {
-          if($row["id"]==$id) {
-            if(password_verify($oldpassword, $row["password"])) {
+      if($resultUsers -> num_rows>0) {
+        while($rowUsers = $resultUsers -> fetch_assoc()) {
+          if($rowUsers["id"] == $id) {
+            if(password_verify($oldpassword, $rowUsers["password"])) {
               $newpassword = password_hash($newpassword, PASSWORD_DEFAULT);
               $sql = "UPDATE Users SET password='$newpassword' WHERE id=$id;";
+
               if ($conn->query($sql) === TRUE) {
                 $info = "Password changed successfully.";
                 echo '<script>alert("Password changed successfully.")</script>';
@@ -64,21 +44,21 @@
     }
   }
 
-  $index_uri = $_SERVER["REQUEST_URI"];
-  $index_uri = explode("/", $index_uri);
 ?>
+
 <!DOCTYPE html>
 <html>
   <head>
     <title>PHP Blog</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="styles/general.css" rel="stylesheet">
     <link href="styles/profile.css" rel="stylesheet">
-
   </head>
   <body>
+    <div class="background-wallpaper"></div>
     <?php include_once("header.php")?>
-    <main class="main container-fluid mt-5">
+    <main class="main container-fluid mt-3">
       <h2 class="text-center mb-3">Update Password</h2>
       <div style="color: red; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
       <form class="mb-5" method="POST" action=<?php echo $_SERVER["PHP_SELF"]?>>
@@ -96,8 +76,8 @@
           <label for="ReenterNewPasswordInput">Re-enter New Password</label>
         </div>
         <div class="d-flex justify-content-end">
-        <a href=""><button type="button" class="btn btn-outline-danger">Cancel</button></a>
-        <button type="submit" class="btn btn-primary ms-2" name="UserID" value="<?php echo $loggedInUser ?>">Update Password</button><div>
+        <a href=<?php echo "/$index_uri[1]" ?>><button type="button" class="btn btn-danger">Cancel</button></a>
+        <button type="submit" class="btn btn-success ms-2" name="UserID" value="<?php echo $loggedInUser ?>">Update Password</button><div>
       </form>
     </main>
   </body>
