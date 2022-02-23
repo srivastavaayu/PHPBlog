@@ -1,4 +1,5 @@
 <?php
+require_once("connect.php");
 echo <<<EOD
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
@@ -11,7 +12,7 @@ echo <<<EOD
 EOD;
 ?>
 <?php
-  if (isset($_COOKIE["LOGIN_STATUS"])) {
+  if ( isset($_SESSION["LOGIN_STATUS"]) /* isset($_COOKIE["LOGIN_STATUS"]) */) {
     echo <<<EOD
     <li class="nav-item navbar__menu__list__item">
       <a class="nav-link active" href="/$index_uri[1]">Home</a>
@@ -34,7 +35,7 @@ EOD;
       </a>
       <ul class="dropdown-menu dropdown-menu-end">
         <li><a class="dropdown-item" href="/$index_uri[1]/profile">Profile</a></li>
-        <li><a class="dropdown-item" href="/$index_uri[1]/change-password">Update Password</a></li>
+        <li><a class="dropdown-item" href="/$index_uri[1]/update-password">Update Password</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="/$index_uri[1]/logout">Logout</a></li>
       </ul>
@@ -47,10 +48,10 @@ EOD;
       <a class="nav-link active" href="/$index_uri[1]">Home</a>
     </li>
     <li class="nav-item navbar__menu__list__item">
-      <a class="nav-link" href="/$index_uri[1]/authentication">Login</a>
+      <a class="nav-link" href="/$index_uri[1]/login">Login</a>
     </li>
     <li class="nav-item navbar__menu__list__item">
-      <a class="nav-link" href="/$index_uri[1]/authentication">Register</a>
+      <a class="nav-link" href="/$index_uri[1]/register">Register</a>
     </li>
 EOD;
   }

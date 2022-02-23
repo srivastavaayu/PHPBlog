@@ -1,7 +1,44 @@
 <?php
   require_once("connect.php");
+
+  $dbname = "PHPBlog";
+
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
   $index_uri = $_SERVER["REQUEST_URI"];
   $index_uri = explode("/", $index_uri);
+
+  $sql = "CREATE TABLE IF NOT EXISTS Users (
+  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  fullname VARCHAR(60) NOT NULL,
+  email VARCHAR(60),
+  username VARCHAR(60),
+  password VARCHAR(255),
+  last_activity_time INT(12) UNSIGNED,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  )";
+
+  if ($conn->query($sql) === TRUE) {
+  } else {
+    echo "Error creating table: " . $conn->error;
+  }
+
+  $sql = "SELECT id, fullname from Users";
+  $result = $conn->query($sql);
+
+  $loggedInUser = isset($_SESSION["LOGIN_USER"]) ? $_SESSION["LOGIN_USER"] : null;
+  // $loggedInUser = isset($_COOKIE["LOGIN_USER"]) ? $_COOKIE["LOGIN_USER"] : null;
+
+  $userfullname = null;
+
+  if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+      if ($row["id"]==$loggedInUser) {
+        $userfullname = $row["fullname"];
+      }
+    }
+  }
+
 ?><!DOCTYPE html>
 <html>
   <head>
@@ -11,5 +48,6 @@
   </head>
   <body>
     <?php include_once("header.php")?>
+    <h3 class="text-center mt-5"><?php echo (isset($userfullname) ? "Hello, ".$userfullname."!" : "Welcome to PHP Blog!")  ?></h3>
   </body>
 </html>

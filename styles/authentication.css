@@ -1,11 +1,3 @@
 .main {
   width: 70%;
 }
-
-#LoginDiv {
-  display: block;
-}
-
-#RegisterDiv {
-  display: none;
-}

@@ -1,8 +1,25 @@
 .blogContainer {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   border: 1px solid #000;
   margin: 5px 2vw;
   padding: 1vw 1vw;
   border-radius: 10px;
+}
+
+.actionButtons {
+  width: 15%;
+}
+
+.blogContentContainer {
+  border: 1px dashed #000;
+  border-radius: 10px;
+  min-height: 50vh;
+}
+
+.commentContainer {
+  padding: 1vw;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
 }
