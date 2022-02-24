@@ -9,6 +9,8 @@
     $username = $_POST["UsernameInput"];
     $password = $_POST["PasswordInput"];
 
+    echo "inside post";
+
     if ($resultUsers -> num_rows > 0) {
       while($rowUsers = $resultUsers->fetch_assoc()) {
         if($rowUsers["username"]==$username) {
@@ -19,7 +21,6 @@
           }
           else {
             $info = "Incorrect credentials! Please check your username and/or password.";
-            echo '<script>alert("Incorrect credentials! Please check your username and/or password.")</script>';
             break;
           }
         }
@@ -27,7 +28,6 @@
     }
     else {
       $info = "Username does not exist! Please create an account.";
-      echo '<script>alert("Username does not exist! Please create an account.")</script>';
     }
   }
 
@@ -47,7 +47,7 @@
     <?php include_once("header.php")?>
     <main class="main container-fluid mt-3">
       <h2 class="text-center mb-3">Login</h2>
-      <div style="color: red; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
+      <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
       <form class="mb-5" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="UsernameInput" name="UsernameInput" placeholder="Username" pattern="[A-Za-z0-9]+" required>
@@ -62,5 +62,16 @@
         <button type="submit" class="btn btn-success ms-2">Login</button></div>
       </form>
     </main>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

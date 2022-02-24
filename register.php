@@ -5,42 +5,68 @@
 
   $info = "";
 
+  function ValidateInput($input) {
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input);
+    return $input;
+  }
+
   if($_SERVER["REQUEST_METHOD"]=="POST") {
-    $fullname = $_POST["FullNameInput"];
-    $email = $_POST["EmailInput"];
-    $username = $_POST["UsernameInput"];
-    $password = $_POST["PasswordInput"];
-    $reenterpassword = $_POST["ReenterPasswordInput"];
-
-    $registrationIssue = 0;
-
-    if ($resultUsers -> num_rows > 0) {
-      while($rowUsers = $resultUsers -> fetch_assoc()) {
-        if (($rowUsers["email"] == $email) || ($rowUsers["username"] == $username)) {
-            $info = "Email and/or username already exists! Please select a different one.";
-            echo '<script>alert("Email and/or username already exists! Please select a different one.")</script>';
-            $registrationIssue = 1;
-            break;
-        }
-      }
+    $fullname = ValidateInput($_POST["FullNameInput"]);
+    $email = ValidateInput($_POST["EmailInput"]);
+    $username = ValidateInput($_POST["UsernameInput"]);
+    $password = ValidateInput($_POST["PasswordInput"]);
+    $reenterpassword = ValidateInput($_POST["ReenterPasswordInput"]);
+    if(empty($fullname)) {
+      $info = "Fullname cannot be empty!";
     }
-    if($registrationIssue == 0) {
-      if ($password === $reenterpassword) {
-        $password = password_hash($password, PASSWORD_DEFAULT);
+    else if (empty($email) or !(preg_match("/\S+@\S+\.\S+/", $email))) {
+      $info = "Email address is not valid! Please check again.";
+    }
+    else if (empty($username) or !(preg_match("/[A-Za-z0-9]+/", $username))) {
+      $info = "Username is not valid! Please check again.";
+    }
+    else if (empty($password) or !(preg_match("/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/", $password))) {
+      $info = "Password is not valid! Please try another one.";
+    }
+    else {
+      $registrationIssue = 0;
 
-        $sql = "INSERT INTO Users (fullname, email, username, password) VALUES ('$fullname', '$email', '$username', '$password')";
-
-        if ($conn->query($sql) === TRUE) {
-        } else {
-          echo "Error creating table: " . $conn->error;
+      if ($resultUsers -> num_rows > 0) {
+        while($rowUsers = $resultUsers -> fetch_assoc()) {
+          if (($rowUsers["email"] == $email) || ($rowUsers["username"] == $username)) {
+              $info = "Email and/or username already exists! Please select a different one.";
+              $registrationIssue = 1;
+              break;
+          }
         }
-
-        echo '<script>alert("User has been registered successfully.")</script>';
-
       }
-      else {
-        $info = "Password and re-entered password do not match! Please try again.";
-        echo '<script>alert("Password and re-entered password do not match! Please try again.")</script>';
+      if($registrationIssue == 0) {
+        if ($password === $reenterpassword) {
+
+          $homeUrl = $index_uri[1];
+
+          $password = password_hash($password, PASSWORD_DEFAULT);
+
+          $sql = "INSERT INTO Users (fullname, email, username, password) VALUES ('$fullname', '$email', '$username', '$password')";
+
+          if ($conn->query($sql) === TRUE) {
+          } else {
+            echo "Error creating table: " . $conn->error;
+          }
+
+          echo <<<EOD
+          <script>
+            alert("User has been registered successfully.");
+            window.location.href = "/$homeUrl/login"
+          </script>
+EOD;
+
+        }
+        else {
+          $info = "Password and re-entered password do not match! Please try again.";
+        }
       }
     }
   }
@@ -61,26 +87,26 @@
     <?php include_once("header.php")?>
     <main class="main container-fluid mt-3">
       <h2 class="text-center mb-3">Register</h2>
-      <div style="color: red; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
+      <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
       <form class="mb-5" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="FullNameInput" name="FullNameInput" placeholder="Full Name" pattern="[A-Za-z0-9 ]+" required>
+          <input type="text" class="form-control" id="FullNameInput" name="FullNameInput" value="<?php echo isset($_POST["FullNameInput"]) ? $_POST["FullNameInput"] : "" ?>" placeholder="Full Name" pattern="[A-Za-z0-9 ]+" required>
           <label for="FullNameInput">Full Name*</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="email" class="form-control" id="EmailInput" name="EmailInput" placeholder="Email" pattern="\S+@\S+\.\S+" required>
+          <input type="email" class="form-control" id="EmailInput" name="EmailInput" value="<?php echo isset($_POST["EmailInput"]) ? $_POST["EmailInput"] : "" ?>" placeholder="Email" pattern="\S+@\S+\.\S+" required>
           <label for="EmailInput">Email Address*</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="UsernameInput" name="UsernameInput" placeholder="Username" pattern="[A-Za-z0-9]+" required>
+          <input type="text" class="form-control" id="UsernameInput" name="UsernameInput" value="<?php echo isset($_POST["UsernameInput"]) ? $_POST["UsernameInput"] : "" ?>" placeholder="Username" pattern="[A-Za-z0-9]+" required>
           <label for="UsernameInput">Username*</label>
         </div>
-        <div class="form-floating mb-3">
+        <small class="px-4">Note: The password must contain atleast 8 characters including an uppercase character, a lowercase character, a digit and a special symbol.</small>
+        <div class="form-floating mb-3 mt-3">
           <input type="password" class="form-control" id="PasswordInput" name="PasswordInput" placeholder="Password" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$" required>
           <label for="PasswordInput">Password*</label>
         </div>
-        <small class="px-4">Note: The password must contain uppercase characters, lowercase characters, digits and special symbols.</small>
-        <div class="form-floating mb-3 mt-3">
+        <div class="form-floating mb-3">
           <input type="password" class="form-control" id="ReenterPasswordInput" name="ReenterPasswordInput" placeholder="Re-enter Password" required>
           <label for="ReenterPasswordInput">Re-enter Password*</label>
         </div>
@@ -90,5 +116,16 @@
         <button type="submit" class="btn btn-success ms-2">Register</button></div>
       </form>
     </main>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

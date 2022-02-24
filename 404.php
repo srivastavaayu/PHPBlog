@@ -20,5 +20,16 @@
         <a href=<?php echo "/$index_uri[1]" ?>><button class="btn btn-primary mt-5" type="button">Navigate to Home</button></a>
       </div>
     </div>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

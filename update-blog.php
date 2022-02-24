@@ -4,7 +4,7 @@
   require_once("./queries/blogs-table.php");
   require_once("redirect.php");
 
-  if($_SERVER["REQUEST_METHOD"]=="POST") {
+  if(isset($_SESSION["LOGIN_STATUS"]) and $_SESSION["LOGIN_STATUS"] and $_SERVER["REQUEST_METHOD"]=="POST") {
     $blogtitle = $_POST["BlogTitleInput"];
     $blogcontent = $_POST["BlogContentInput"];
     $blogid = $_POST["blogid"];
@@ -56,5 +56,16 @@
         <button type="submit" class="btn btn-success ms-2" name="blogid" value=<?php echo $updateBlogId ?>>Update Blog</button></div>
       </form>
     </main>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

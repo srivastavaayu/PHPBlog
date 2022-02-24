@@ -5,7 +5,7 @@
   require_once("./queries/comments-table.php");
   require_once("redirect.php");
 
-  if ($_SERVER["REQUEST_METHOD"]=="POST") {
+  if (isset($_SESSION["LOGIN_STATUS"]) and $_SESSION["LOGIN_STATUS"] and $_SERVER["REQUEST_METHOD"]=="POST") {
     if (isset($_POST["commentAction"]) and $_POST["commentAction"] == "delete") {
       $commentId = (int) $_POST["commentid"];
       $sql = "DELETE FROM Comments WHERE id=$commentId;";
@@ -43,6 +43,7 @@
     if ($rowBlogs["id"] == $blogid) {
       $blogtitle = $rowBlogs["blogtitle"];
       $blogcontent = $rowBlogs["blogcontent"];
+      $timestamp = $rowBlogs["timestamp"];
       if ($resultUsers -> num_rows > 0) {
         while($rowUsers = $resultUsers -> fetch_assoc()) {
           if ($rowUsers["id"] == $rowBlogs["userid"]) {
@@ -51,8 +52,13 @@
         }
       }
       $blog .= <<<EOD
-        <h2 class="text-center mb-3">$blogtitle</h2>
-        <h5 class="text-center">$userfullname</h3>
+        <div class="d-flex justify-content-between">
+        <div>
+        <h2 class="mb-3">$blogtitle</h2>
+        <h5>$userfullname</h3>
+        </div>
+        <small>$timestamp</small>
+        </div>
         <p class="blogContentContainer p-3 my-4 text-break">$blogcontent</p>
 EOD;
     }
@@ -143,5 +149,16 @@ EOD;
         <?php echo $comments ?>
       </div>
     </div>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

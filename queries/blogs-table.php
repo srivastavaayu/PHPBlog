@@ -15,7 +15,7 @@
     echo "Error creating table: " . $conn->error;
   }
 
-  $sql = "SELECT id, blogtitle, blogcontent, userid from Blogs";
+  $sql = "SELECT id, blogtitle, blogcontent, userid, timestamp from Blogs";
   $resultBlogs = $conn->query($sql);
 
 ?>

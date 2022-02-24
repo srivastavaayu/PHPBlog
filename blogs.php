@@ -18,7 +18,6 @@
     }
 
     $info = "Blog has been deleted successfully.";
-    echo '<script>alert("Blog has been deleted successfully.")</script>';
   }
 
   $sql = "SELECT id, blogtitle, blogcontent, userid from Blogs";
@@ -96,8 +95,19 @@ EOD;
     <?php include_once("header.php")?>
     <main class="main container-fluid mt-3 mb-3">
       <h2 class="text-center mb-3">Blogs</h2>
-      <div style="color: red; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
+      <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
       <?php echo $blogs?>
     </div>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

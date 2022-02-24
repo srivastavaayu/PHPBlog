@@ -6,10 +6,12 @@
 
   $info = "";
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (isset($_SESSION["LOGIN_STATUS"]) and $_SESSION["LOGIN_STATUS"] and $_SERVER["REQUEST_METHOD"] == "POST") {
     $blogtitle = $_POST["BlogTitleInput"];
     $blogcontent = $_POST["BlogContentInput"];
     $userid = (int) $_SESSION['LOGIN_USER'];
+
+    $homeUrl = $index_uri[1];
 
     $sql = "INSERT INTO Blogs (blogtitle, blogcontent, userid) VALUES ('$blogtitle', '$blogcontent', $userid)";
 
@@ -19,7 +21,14 @@
     }
 
     $info = "Blog has been added successfully.";
-    echo '<script>alert("Blog has been added successfully.")</script>';
+
+    echo <<<EOD
+          <script>
+            alert("Blog has been added successfully.");
+            window.location.href = "/$homeUrl/blogs"
+          </script>
+EOD;
+
   }
 
 ?>
@@ -37,7 +46,7 @@
     <?php include_once("header.php")?>
     <main class="main container-fluid mt-3" style="width: 70%">
       <h2 class="text-center mb-3">Add Blog</h2>
-      <div style="color: red; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
+      <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
       <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="BlogTitleInput" name="BlogTitleInput" placeholder="Blog Title" required>
@@ -52,5 +61,16 @@
         <button type="submit" class="btn btn-success ms-2">Add Blog</button></div>
       </form>
     </main>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

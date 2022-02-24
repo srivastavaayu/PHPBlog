@@ -7,7 +7,7 @@
 
   $info = "";
 
-  if($_SERVER["REQUEST_METHOD"]=="POST") {
+  if(isset($_SESSION["LOGIN_STATUS"]) and $_SESSION["LOGIN_STATUS"] and $_SERVER["REQUEST_METHOD"]=="POST") {
     $id = (int) $_POST["UserID"];
     $oldpassword = $_POST["OldPasswordInput"];
     $newpassword = $_POST["NewPasswordInput"];
@@ -15,9 +15,11 @@
 
     if ($newpassword != $reenternewpassword) {
       $info = "New password does not match re-entered password.";
-      echo '<script>alert("New password does not match re-entered password.")</script>';
     }
     else {
+
+      $homeUrl = $index_uri[1];
+
       if($resultUsers -> num_rows>0) {
         while($rowUsers = $resultUsers -> fetch_assoc()) {
           if($rowUsers["id"] == $id) {
@@ -27,7 +29,13 @@
 
               if ($conn->query($sql) === TRUE) {
                 $info = "Password changed successfully.";
-                echo '<script>alert("Password changed successfully.")</script>';
+                echo <<<EOD
+                  <script>
+                    alert("Password changed successfully.");
+                    window.location.href = "/$homeUrl"
+                  </script>
+EOD;
+
                 break;
               } else {
                 echo "Error executing query. " . $conn->error;
@@ -60,7 +68,7 @@
     <?php include_once("header.php")?>
     <main class="main container-fluid mt-3">
       <h2 class="text-center mb-3">Update Password</h2>
-      <div style="color: red; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
+      <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
       <form class="mb-5" method="POST" action=<?php echo $_SERVER["PHP_SELF"]?>>
         <div class="form-floating mb-3">
           <input type="password" class="form-control" id="OldPasswordInput" name="OldPasswordInput" placeholder="Current Password" required>
@@ -80,5 +88,16 @@
         <button type="submit" class="btn btn-success ms-2" name="UserID" value="<?php echo $loggedInUser ?>">Update Password</button><div>
       </form>
     </main>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

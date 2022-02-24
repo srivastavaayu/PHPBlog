@@ -6,7 +6,7 @@
 
   $info = "";
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (isset($_SESSION["LOGIN_STATUS"]) and $_SESSION["LOGIN_STATUS"] and $_SERVER["REQUEST_METHOD"] == "POST") {
     $id = (int) $_POST["UserID"];
     $fullname = $_POST["FullNameInput"];
     $email = $_POST["EmailInput"];
@@ -52,7 +52,7 @@
     <?php include_once("header.php")?>
     <main class="main container-fluid mt-3">
       <h2 class="text-center mb-3">Profile</h2>
-      <div style="color: red; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
+      <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3"><?php echo $info ?></div>
       <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="FullNameInput" name="FullNameInput" placeholder="Full Name" value="<?php echo $fullname ?>" pattern="[A-Za-z0-9 ]+">
@@ -71,5 +71,16 @@
         <button type="submit" class="btn btn-success ms-2" name="UserID" value="<?php echo $loggedInUser ?>">Update Profile</button></div>
       </form>
     </main>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>

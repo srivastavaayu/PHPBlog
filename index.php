@@ -3,10 +3,12 @@
   require_once("session.php");
   require_once("./queries/users-table.php");
 
-  if ($resultUsers -> num_rows > 0) {
-    while($rowUsers = $resultUsers -> fetch_assoc()) {
-      if ($rowUsers["id"] == $loggedInUser) {
-        $userFullname = $rowUsers["fullname"];
+  if(isset($loggedInUser)) {
+    if ($resultUsers -> num_rows > 0) {
+      while($rowUsers = $resultUsers -> fetch_assoc()) {
+        if ($rowUsers["id"] == $loggedInUser) {
+          $userFullname = $rowUsers["fullname"];
+        }
       }
     }
   }
@@ -27,4 +29,15 @@
     <?php include_once("header.php")?>
     <h3 class="text-center mt-5"><?php echo (isset($userFullname) ? 'Hello, <span class="userGreeting">'.$userFullname.'</span>!' : 'Welcome to <span class="userGreeting">PHP Blog</span>!')  ?></h3>
   </body>
+  <script>
+    document.addEventListener("visibilitychange", function() {
+      if (document.visibilityState === 'visible') {
+        setInterval(() => {
+          let data = 1;
+          const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+          navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+        }, 15000);
+      }
+    });
+  </script>
 </html>

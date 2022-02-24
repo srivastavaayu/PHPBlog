@@ -12,7 +12,7 @@
       $fullname = $rowUsers["fullname"];
       $username = $rowUsers["username"];
       $lastActivityTime = $rowUsers["last_activity_time"];
-      if (time() - $lastActivityTime > 900) {
+      if (time() - $lastActivityTime > 20) {
         $users .= <<<EOD
         <tr>
           <td>$id</td>
@@ -66,5 +66,16 @@ EOD;
         </tbody>
       </table>
     </div>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'visible') {
+          setInterval(() => {
+            let data = 1;
+            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+          }, 15000);
+        }
+      });
+    </script>
   </body>
 </html>
