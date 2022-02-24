@@ -25,12 +25,12 @@
       header('Location: /'.$index_uri[1].'/logout');
     }
 
-    // $sql = "UPDATE Users SET last_activity_time=$currTime WHERE id=$userid;";
+    $sql = "UPDATE Users SET last_activity_time=$currTime WHERE id=$userid;";
 
-    // if ($conn->query($sql) === TRUE) {
-    // } else {
-    //   echo "Error executing query. " . $conn->error;
-    // }
+    if ($conn->query($sql) === TRUE) {
+    } else {
+      echo "Error executing query. " . $conn->error;
+    }
   }
 
   $sql = "SELECT id, fullname, email, username, password, last_activity_time from Users";

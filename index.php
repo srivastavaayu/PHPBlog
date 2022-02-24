@@ -30,14 +30,12 @@
     <h3 class="text-center mt-5"><?php echo (isset($userFullname) ? 'Hello, <span class="userGreeting">'.$userFullname.'</span>!' : 'Welcome to <span class="userGreeting">PHP Blog</span>!')  ?></h3>
   </body>
   <script>
-    document.addEventListener("visibilitychange", function() {
-      if (document.visibilityState === 'visible') {
-        setInterval(() => {
-          let data = 1;
-          const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
-          navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
-        }, 15000);
-      }
+    document.addEventListener("DOMContentLoaded", function() {
+      setInterval(() => {
+        let data = 1;
+        const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+        navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+      }, 15000);
     });
   </script>
 </html>

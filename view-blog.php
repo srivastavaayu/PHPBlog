@@ -150,14 +150,12 @@ EOD;
       </div>
     </div>
     <script>
-      document.addEventListener("visibilitychange", function() {
-        if (document.visibilityState === 'visible') {
-          setInterval(() => {
-            let data = 1;
-            const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
-            navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
-          }, 15000);
-        }
+      document.addEventListener("DOMContentLoaded", function() {
+        setInterval(() => {
+          let data = 1;
+          const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
+          navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
+        }, 15000);
       });
     </script>
   </body>

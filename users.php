@@ -67,14 +67,13 @@ EOD;
       </table>
     </div>
     <script>
-      document.addEventListener("visibilitychange", function() {
-        if (document.visibilityState === 'visible') {
+      document.addEventListener("DOMContentLoaded", function() {
           setInterval(() => {
+            console.log("hello");
             let data = 1;
             const dataToStimulate = new Blob([JSON.stringify(data)], {type : 'application/json'});
             navigator.sendBeacon('/PHPBlog/log-status.php', dataToStimulate);
           }, 15000);
-        }
       });
     </script>
   </body>
