@@ -35,7 +35,7 @@
                   Settings
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="/$apex_index_uri/controllers/profile">Profile</a></li>
+                  <li><a class="dropdown-item" href="/$apex_index_uri/controllers/update-profile">Update Profile</a></li>
                   <li><a class="dropdown-item" href="/$apex_index_uri/controllers/update-password">Update Password</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="/$apex_index_uri/controllers/logout">Logout</a></li>

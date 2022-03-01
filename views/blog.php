@@ -3,7 +3,7 @@
   require_once("../general.php");
   require_once("header.php");
 
-  function returnViewBlog($resultBlog, $resultUsers, $resultComments, $loggedInUser) {
+  function returnBlog($resultBlog, $resultUsers, $resultComments, $loggedInUser) {
     global $apex_index_uri;
 
     $headerView = returnHeader();
@@ -58,7 +58,7 @@ EOD;
                 <small>- $commentUserFullName</small>
               </div>
               <div class="actionButtons text-end">
-                <form class="d-inline-block" method="POST" action="/$apex_index_uri/controllers/view-blog?blogid=$blogId">
+                <form class="d-inline-block" method="POST" action="/$apex_index_uri/controllers/blog?blogid=$blogId">
                   <input type="hidden" name="commentid" value="$commentId"/>
                   <button class="btn btn-danger" name="commentAction" value="delete">Delete Comment</button>
                 </form>
@@ -101,7 +101,7 @@ EOD;
           $headerView
           <main class="main container-fluid mt-3 px-4 my-4">
             $blog
-            <form method="POST" action="/$apex_index_uri/controllers/view-blog?blogid=$blogId">
+            <form method="POST" action="/$apex_index_uri/controllers/blog?blogid=$blogId">
               <div class="form-floating mb-3">
                 <textarea class="form-control" id="AddCommentInput" name="AddCommentInput" placeholder="Add Comment" style="height: 10vh" required></textarea>
                 <label for="AddCommentInput">Add Comment</label>

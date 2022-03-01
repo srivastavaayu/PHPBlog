@@ -29,14 +29,14 @@
       else {
         $response = setSpecificBlogData($blogId, $blogTitle, $blogContent);
 
-        if ($response[0] === FALSE) {
+        if ($response === FALSE) {
           $view = return404();
         }
         else {
           echo <<<EOD
             <script>
               alert("Blog has been updated successfully.");
-              window.location.href = "/$apex_index_uri/controllers/blogs"
+              window.location.href = "/$apex_index_uri/controllers/blogs";
             </script>
 EOD;
         }

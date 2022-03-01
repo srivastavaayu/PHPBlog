@@ -27,7 +27,7 @@
 
         if ($loggedInUser == $userId) {
           $blogs .= <<<EOD
-            <a href="/$apex_index_uri/controllers/view-blog?blogid=$blogId" style="text-decoration: none; color: #000">
+            <a href="/$apex_index_uri/controllers/blog?blogid=$blogId" style="text-decoration: none; color: #000">
               <div class="blogContainer">
                 <div>
                   <small class="text-truncate" style="max-width: 75vw; line-height: 1.5">Author: <span style="font-weight: 500">$userFullName (You)<span></small>
@@ -48,7 +48,7 @@ EOD;
         }
         else {
           $blogs .= <<<EOD
-            <a href="/$apex_index_uri/controllers/view-blog?blogid=$blogId" style="text-decoration: none; color: #000">
+            <a href="/$apex_index_uri/controllers/blog?blogid=$blogId" style="text-decoration: none; color: #000">
               <div class="blogContainer">
                 <div>
                   <small class="text-truncate" style="max-width: 75vw; line-height: 1.5">Author: <span style="font-weight: 500">$userFullName</span></small>

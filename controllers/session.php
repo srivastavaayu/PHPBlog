@@ -33,7 +33,7 @@
 
       $response = setSpecificUserLastActivityTimeData($loggedInUser, $currentTime);
 
-      if ($response[0] === TRUE) {
+      if ($response === TRUE) {
         $returnValue = [TRUE, $loggedInUser];
         return $returnValue;
       }

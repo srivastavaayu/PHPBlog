@@ -46,7 +46,7 @@
 
               $response = setSpecificUserPasswordData($session[1], "'$updateNewPassword'");
 
-              if ($response[0] === FALSE) {
+              if ($response === FALSE) {
               $view = return404();
               }
               else {

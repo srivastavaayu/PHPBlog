@@ -28,11 +28,11 @@
                   <input type="password" class="form-control" id="OldPasswordInput" name="OldPasswordInput" placeholder="Current Password" required>
                   <label for="OldPasswordInput">Current Password</label>
                 </div>
-                <div class="form-floating mb-3">
+                <small class="px-4">Note: The password must contain atleast 8 characters including an uppercase character, a lowercase character, a digit and a special symbol.</small>
+                <div class="form-floating mb-3 mt-3">
                   <input type="password" class="form-control" id="NewPasswordInput" name="NewPasswordInput" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$" placeholder="New Password" required>
                   <label for="NewPasswordInput">New Password</label>
                 </div>
-                <small class="px-4">Note: The password must contain uppercase characters, lowercase characters, digits and special symbols.</small>
                 <div class="form-floating mb-3 mt-3">
                   <input type="password" class="form-control" id="ReenterNewPasswordInput" name="ReenterNewPasswordInput" placeholder="Re-enter New Password" required>
                   <label for="ReenterNewPasswordInput">Re-enter New Password</label>

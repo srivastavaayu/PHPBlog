@@ -8,10 +8,6 @@
     $userid = $_SESSION["LOGIN_USER"];
 
     $response = setSpecificUserLastActivityTimeData($userid, $currentTime);
-
-    if ($response[0] == FALSE) {
-      echo "failed";
-    }
   }
 
 ?>

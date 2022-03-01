@@ -4,7 +4,7 @@
   require_once("../general.php");
   require_once("redirect.php");
   require_once("../models/users-table.php");
-  require_once("../views/profile.php");
+  require_once("../views/update-profile.php");
   require_once("../views/404.php");
 
   $session = startSession();
@@ -59,7 +59,7 @@
               if ($updateEmail == $currentEmail) {
                 $response = setSpecificUserData($updateFieldsandValues, $session[1]);
 
-                if ($response[0]) {
+                if ($response) {
                   echo <<<EOD
                     <script>
                       alert("User has been updated successfully.");
@@ -80,7 +80,7 @@ EOD;
                 if ($registrationIssue == 0) {
                   $response = setSpecificUserData($updateFieldsandValues, $session[1]);
 
-                  if ($response[0]) {
+                  if ($response) {
                     echo <<<EOD
                       <script>
                         alert("User has been updated successfully.");
@@ -95,7 +95,7 @@ EOD;
               if ($updateUsername == $currentUsername) {
                 $response = setSpecificUserData($updateFieldsandValues, $session[1]);
 
-                if ($response[0]) {
+                if ($response) {
                   echo <<<EOD
                     <script>
                       alert("User has been updated successfully.");
@@ -116,7 +116,7 @@ EOD;
                 if ($registrationIssue == 0) {
                   $response = setSpecificUserData($updateFieldsandValues, $session[1]);
 
-                  if ($response[0]) {
+                  if ($response) {
                     echo <<<EOD
                       <script>
                         alert("User has been updated successfully.");
@@ -139,7 +139,7 @@ EOD;
               if ($registrationIssue == 0) {
                 $response = setSpecificUserData($updateFieldsandValues, $session[1]);
 
-                if ($response[0]) {
+                if ($response) {
                   echo <<<EOD
                     <script>
                       alert("User has been updated successfully.");
@@ -161,7 +161,7 @@ EOD;
     }
 
     if(!$view) {
-      $view = returnProfile($result[1], $session[1], $info);
+      $view = returnUpdateProfile($result[1], $session[1], $info);
     }
   }
 

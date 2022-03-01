@@ -59,11 +59,11 @@
 
               $response = addSpecificUser($createFullName, $createEmail, $createUsername, $createPassword);
 
-              if ($response[0]) {
+              if ($response) {
                 echo <<<EOD
                   <script>
                     alert("User has been registered successfully.");
-                    window.location.href = "/$apex_index_uri/controllers/login"
+                    window.location.href = "/$apex_index_uri/controllers/login";
                   </script>
 EOD;
               }

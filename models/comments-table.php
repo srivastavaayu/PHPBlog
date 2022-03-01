@@ -27,8 +27,12 @@
       FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
     )";
 
-    if ($conn -> query($sql) === FALSE) {
-      $returnValue = [FALSE];
+    if ($conn -> query($sql) === TRUE) {
+      $returnValue = TRUE;
+      return $returnValue;
+    }
+    else {
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -38,7 +42,7 @@
 
     $tableCreation = createCommentsTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
@@ -56,7 +60,7 @@
 
     $tableCreation = createCommentsTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
@@ -74,19 +78,19 @@
 
     $tableCreation = createCommentsTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "INSERT INTO Comments (comment, blogid, userid) VALUES ('$commentContent', $blogId, $userId);";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -96,19 +100,19 @@
 
     $tableCreation = createCommentsTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "DELETE FROM Comments WHERE id=$commentIdentifier";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }

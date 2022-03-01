@@ -34,7 +34,7 @@
             $currentTime = time();
 
             $response = setSpecificUserLastActivityTimeData($row["id"], $currentTime);
-            if ($response[0] === FALSE) {
+            if ($response === FALSE) {
               $view = return404();
             }
             else {

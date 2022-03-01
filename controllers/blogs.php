@@ -23,7 +23,7 @@
 
       $result = removeSpecificBlogData($blogId);
 
-      if ($result[0] === FALSE) {
+      if ($result === FALSE) {
         $view = return404();
       }
 

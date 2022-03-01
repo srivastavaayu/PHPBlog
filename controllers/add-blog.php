@@ -27,14 +27,14 @@
       else {
         $result = addSpecificBlogData($blogTitle, $blogContent, $session[1]);
 
-        if ($result[0] === FALSE) {
+        if ($result === FALSE) {
           $view = return404();
         }
         else {
           echo <<<EOD
             <script>
               alert("Blog has been added successfully.");
-              window.location.href = "/$apex_index_uri/controllers/blogs"
+              window.location.href = "/$apex_index_uri/controllers/blogs";
             </script>
 EOD;
         }

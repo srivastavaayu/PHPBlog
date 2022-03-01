@@ -27,8 +27,12 @@
       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
 
-    if ($conn -> query($sql) === FALSE) {
-      $returnValue = [FALSE];
+    if ($conn -> query($sql) === TRUE) {
+      $returnValue = TRUE;
+      return $returnValue;
+    }
+    else {
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -38,7 +42,7 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
@@ -56,7 +60,7 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
@@ -74,12 +78,11 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
 
-    //TODO: Check to see if we can include quotes in data
     $sql = "SELECT id, password FROM Users WHERE $userField = $userIdentifier ORDER BY id;";
 
     $result = $conn -> query($sql);
@@ -93,7 +96,7 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
@@ -111,19 +114,19 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "INSERT INTO Users (fullname, email, username, password) VALUES ('$userFullName', '$userEmail', '$userUsername', '$userPassword');";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -133,8 +136,8 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
@@ -148,11 +151,11 @@
     $sql = "UPDATE Users SET $toUpdateValues WHERE id = $userIdentifier;";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -162,19 +165,19 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "UPDATE Users SET password=$userNewPassword WHERE id = $userIdentifier;";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -184,19 +187,19 @@
 
     $tableCreation = createUsersTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "UPDATE Users SET last_activity_time=$currentTime WHERE id = $userIdentifier;";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }

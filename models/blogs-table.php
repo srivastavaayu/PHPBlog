@@ -12,7 +12,7 @@
       $conn = $databaseConnection[1];
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
 
@@ -25,8 +25,12 @@
       FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
     )";
 
-    if ($conn -> query($sql) === FALSE) {
-      $returnValue = [FALSE];
+    if ($conn -> query($sql) === TRUE) {
+      $returnValue = TRUE;
+      return $returnValue;
+    }
+    else {
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -36,7 +40,7 @@
 
     $tableCreation = createBlogsTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
@@ -47,6 +51,7 @@
 
     $returnValue = [TRUE, $result];
     return $returnValue;
+
   }
 
   function getSpecificBlogData($blogField, $blogIdentifier) {
@@ -54,7 +59,7 @@
 
     $tableCreation = createBlogsTable();
 
-    if ($tableCreation[0] === FALSE) {
+    if ($tableCreation === FALSE) {
       $returnValue = [FALSE];
       return $returnValue;
     }
@@ -72,19 +77,19 @@
 
     $tableCreation = createBlogsTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "INSERT INTO Blogs (blogtitle, blogcontent, userid) VALUES ('$blogTitle', '$blogContent', $userId);";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -94,19 +99,19 @@
 
     $tableCreation = createBlogsTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "DELETE FROM Blogs WHERE id=$blogIdentifier";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }
@@ -116,19 +121,19 @@
 
     $tableCreation = createBlogsTable();
 
-    if ($tableCreation[0] === FALSE) {
-      $returnValue = [FALSE];
+    if ($tableCreation === FALSE) {
+      $returnValue = FALSE;
       return $returnValue;
     }
 
     $sql = "UPDATE Blogs SET blogtitle='$blogTitle', blogcontent='$blogContent' WHERE id=$blogIdentifier";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = [TRUE];
+      $returnValue = TRUE;
       return $returnValue;
     }
     else {
-      $returnValue = [FALSE];
+      $returnValue = FALSE;
       return $returnValue;
     }
   }

@@ -6,7 +6,7 @@
   require_once("../models/users-table.php");
   require_once("../models/blogs-table.php");
   require_once("../models/comments-table.php");
-  require_once("../views/view-blog.php");
+  require_once("../views/blog.php");
   require_once("../views/404.php");
 
   $session = startSession();
@@ -20,13 +20,17 @@
     $info = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      if (isset($_POST["commentAction"]) and $_POST["commentAction"] == "delete") {
+      if ((isset($_POST["commentAction"])) and ($_POST["commentAction"] == "delete")) {
         $commentId = $_POST["commentid"];
 
         $response = removeSpecificCommentData($commentId);
 
-        if ($response[0] === TRUE) {
-          echo '<script>alert("Comment has been deleted successfully.")</script>';
+        if ($response === TRUE) {
+          echo <<<EOD
+          <script>
+            alert("Comment has been deleted successfully.");
+          </script>
+EOD;
         }
         else {
           $view = return404();
@@ -38,8 +42,12 @@
 
         $response = addSpecificCommentData($commentContent, $blogId, $session[1]);
 
-        if ($response[0] === TRUE) {
-          echo '<script>alert("Comment has been added successfully.")</script>';
+        if ($response === TRUE) {
+          echo <<<EOD
+          <script>
+            alert("Comment has been added successfully.");
+          </script>
+EOD;
         }
         else {
           $view = return404();
@@ -76,7 +84,7 @@
     }
 
     if (!$view) {
-      $view = returnViewBlog($resultBlog, $resultUsers, $resultComments, $session[1]);
+      $view = returnBlog($resultBlog, $resultUsers, $resultComments, $session[1]);
     }
 
   }
