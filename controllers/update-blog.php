@@ -19,7 +19,7 @@
 
     $blogId = $_GET["blogid"];
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_SESSION["LOGIN_STATUS"]) and $_SESSION["LOGIN_STATUS"] and $_SERVER["REQUEST_METHOD"] == "POST") {
       $blogTitle = $_POST["BlogTitleInput"];
       $blogContent = $_POST["BlogContentInput"];
 

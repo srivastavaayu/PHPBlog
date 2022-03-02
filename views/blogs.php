@@ -3,7 +3,7 @@
   require_once("../general.php");
   require_once("header.php");
 
-  function returnBlogs($resultBlogs, $resultUsers, $loggedInUser, $info) {
+  function returnBlogs($resultBlogs, $resultUsers, $loggedInUser, $info, $sortBehaviour) {
     global $apex_index_uri;
 
     $headerView = returnHeader();
@@ -62,6 +62,21 @@ EOD;
       }
     }
 
+    if ($sortBehaviour === "ASC") {
+      $sortButton = <<<EOD
+        <form method="POST" action="/$apex_index_uri/controllers/blogs">
+          <button class="btn btn-info" type="submit" name="sortBehaviour" value="DESC">Sort by: Asc (Time) | Click to change</button>
+        </form>
+EOD;
+    }
+    else {
+      $sortButton = <<<EOD
+        <form method="POST" action="/$apex_index_uri/controllers/blogs">
+          <button class="btn btn-info" type="submit" name="sortBehaviour" value="ASC">Sort by: Desc (Time) | Click to change</button>
+        </form>
+EOD;
+    }
+
     $view = <<<EOD
       <!DOCTYPE html>
       <html>
@@ -78,6 +93,7 @@ EOD;
           <main class="main container-fluid mt-3 mb-3">
             <h2 class="text-center mb-3">Blogs</h2>
             <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3">$info</div>
+            <div class="d-flex justify-content-end mb-2">$sortButton</div>
             $blogs
           </div>
           <script>

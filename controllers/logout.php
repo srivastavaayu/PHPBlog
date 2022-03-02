@@ -11,7 +11,7 @@
     $view = return404();
   }
   else {
-    $_SESSION["LOGIN_STATUS"] = false;
+    $_SESSION["LOGIN_STATUS"] = FALSE;
     $_SESSION["LOGIN_USER"] = -1;
 
     session_unset();

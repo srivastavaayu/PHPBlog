@@ -30,7 +30,7 @@
       $currentUsername = $row["username"];
     }
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_SESSION["LOGIN_STATUS"]) and $_SESSION["LOGIN_STATUS"] and $_SERVER["REQUEST_METHOD"] == "POST") {
       $updateFullName = $_POST["FullNameInput"];
       $updateEmail = $_POST["EmailInput"];
       $updateUsername = $_POST["UsernameInput"];

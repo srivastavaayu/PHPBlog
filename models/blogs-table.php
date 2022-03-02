@@ -35,7 +35,7 @@
     }
   }
 
-  function getAllBlogsData() {
+  function getAllBlogsData($sortBehaviour) {
     global $conn;
 
     $tableCreation = createBlogsTable();
@@ -45,7 +45,7 @@
       return $returnValue;
     }
 
-    $sql = "SELECT id, blogtitle, blogcontent, userid, timestamp from Blogs ORDER BY id";
+    $sql = "SELECT id, blogtitle, blogcontent, userid, timestamp from Blogs ORDER BY id $sortBehaviour";
 
     $result = $conn -> query($sql);
 

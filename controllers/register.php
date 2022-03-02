@@ -44,9 +44,9 @@
         else {
           $registrationIssue = 0;
 
-          if ($result -> num_rows > 0) {
-            while($row = $result -> fetch_assoc()) {
-              if (($row["email"] == $createEmail) || ($row["username"] == $createUsername)) {
+          if ($result[1] -> num_rows > 0) {
+            while($row = $result[1] -> fetch_assoc()) {
+              if (($row["email"] == $createEmail) or ($row["username"] == $createUsername)) {
                   $info = "Email and/or username already exists! Please select a different one.";
                   $registrationIssue = 1;
                   break;

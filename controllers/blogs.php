@@ -17,20 +17,26 @@
   }
   else {
     $info = "";
+    $sortBehaviour = "ASC";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $blogId = $_POST["blogid"];
-
-      $result = removeSpecificBlogData($blogId);
-
-      if ($result === FALSE) {
-        $view = return404();
+      if (isset($_POST["sortBehaviour"])) {
+        $sortBehaviour = $_POST["sortBehaviour"];
       }
+      else {
+        $blogId = $_POST["blogid"];
 
-      $info = "Blog has been deleted successfully.";
+        $result = removeSpecificBlogData($blogId);
+
+        if ($result === FALSE) {
+          $view = return404();
+        }
+
+        $info = "Blog has been deleted successfully.";
+      }
     }
 
-    $resultBlogs = getAllBlogsData();
+    $resultBlogs = getAllBlogsData($sortBehaviour);
 
     if ($resultBlogs[0] === FALSE) {
       $view = return404();
@@ -43,7 +49,7 @@
     }
 
     if (!$view) {
-      $view = returnBlogs($resultBlogs[1], $resultUsers[1], $session[1], $info);
+      $view = returnBlogs($resultBlogs[1], $resultUsers[1], $session[1], $info, $sortBehaviour);
     }
   }
 
