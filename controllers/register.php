@@ -3,6 +3,7 @@
   require_once("session.php");
   require_once("../general.php");
   require_once("../models/users-table.php");
+  require_once("../models/blogs-table.php");
   require_once("../views/register.php");
   require_once("../views/404.php");
 

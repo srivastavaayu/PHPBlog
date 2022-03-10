@@ -3,6 +3,7 @@
 
   $conn;
 
+
   function createBlogsTable() {
     global $conn;
 
@@ -23,7 +24,8 @@
       userid INT(6) UNSIGNED NOT NULL,
       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
-    )";
+    )
+    ENGINE = INNODB";
 
     if ($conn -> query($sql) === TRUE) {
       $returnValue = TRUE;

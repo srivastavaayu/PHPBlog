@@ -25,7 +25,8 @@
       password VARCHAR(255),
       last_activity_time INT(12) UNSIGNED,
       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    )";
+    )
+    ENGINE = INNODB";
 
     if ($conn -> query($sql) === TRUE) {
       $returnValue = TRUE;
@@ -119,11 +120,19 @@
       return $returnValue;
     }
 
+    $sql = "START TRANSACTION;";
+
+    $conn -> query($sql);
+
     $sql = "INSERT INTO Users (fullname, email, username, password) VALUES ('$userFullName', '$userEmail', '$userUsername', '$userPassword');";
 
     if ($conn -> query($sql) === TRUE) {
-      $returnValue = TRUE;
-      return $returnValue;
+        $sql = "COMMIT;";
+
+        if ($conn -> query($sql) === TRUE) {
+          $returnValue = TRUE;
+          return $returnValue;
+        }
     }
     else {
       $returnValue = FALSE;

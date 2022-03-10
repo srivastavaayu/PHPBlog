@@ -25,7 +25,8 @@
       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       FOREIGN KEY (blogid) REFERENCES Blogs (id) ON DELETE CASCADE,
       FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
-    )";
+    )
+    ENGINE = INNODB";
 
     if ($conn -> query($sql) === TRUE) {
       $returnValue = TRUE;
