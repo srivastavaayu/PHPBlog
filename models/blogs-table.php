@@ -17,24 +17,26 @@
       return $returnValue;
     }
 
-    $sql = "CREATE TABLE IF NOT EXISTS Blogs (
-      id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      blogtitle VARCHAR(60) NOT NULL,
-      blogcontent MEDIUMTEXT,
-      userid INT(6) UNSIGNED NOT NULL,
-      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
-    )
-    ENGINE = INNODB";
+    try {
+      $sql = "CREATE TABLE IF NOT EXISTS Blogs (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        blogtitle VARCHAR(60) NOT NULL,
+        blogcontent MEDIUMTEXT,
+        userid INT(6) UNSIGNED NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
+      )
+      ENGINE = INNODB";
 
-    if ($conn -> query($sql) === TRUE) {
+      $conn -> query($sql);
+
       $returnValue = TRUE;
-      return $returnValue;
     }
-    else {
+    catch (mysqli_sql_exception $exception) {
       $returnValue = FALSE;
-      return $returnValue;
     }
+
+    return $returnValue;
   }
 
   function getAllBlogsData($sortBehaviour) {
@@ -47,11 +49,17 @@
       return $returnValue;
     }
 
-    $sql = "SELECT id, blogtitle, blogcontent, userid, timestamp from Blogs ORDER BY id $sortBehaviour";
+    try {
+      $sql = "SELECT id, blogtitle, blogcontent, userid, timestamp from Blogs ORDER BY id $sortBehaviour";
 
-    $result = $conn -> query($sql);
+      $result = $conn -> query($sql);
 
-    $returnValue = [TRUE, $result];
+      $returnValue = [TRUE, $result];
+    }
+    catch (mysqli_sql_exception $exception) {
+      $returnValue = [FALSE];
+    }
+
     return $returnValue;
 
   }
@@ -66,11 +74,17 @@
       return $returnValue;
     }
 
-    $sql = "SELECT id, blogtitle, blogcontent, userid, timestamp from Blogs WHERE $blogField = $blogIdentifier ORDER BY id;";
+    try {
+      $sql = "SELECT id, blogtitle, blogcontent, userid, timestamp from Blogs WHERE $blogField = $blogIdentifier ORDER BY id;";
 
-    $result = $conn -> query($sql);
+      $result = $conn -> query($sql);
 
-    $returnValue = [TRUE, $result];
+      $returnValue = [TRUE, $result];
+    }
+    catch (mysqli_sql_exception $exception) {
+      $returnValue = [FALSE];
+    }
+
     return $returnValue;
   }
 
@@ -84,16 +98,18 @@
       return $returnValue;
     }
 
-    $sql = "INSERT INTO Blogs (blogtitle, blogcontent, userid) VALUES ('$blogTitle', '$blogContent', $userId);";
+    try {
+      $sql = "INSERT INTO Blogs (blogtitle, blogcontent, userid) VALUES ('$blogTitle', '$blogContent', $userId);";
 
-    if ($conn -> query($sql) === TRUE) {
+      $conn -> query($sql);
+
       $returnValue = TRUE;
-      return $returnValue;
     }
-    else {
+    catch (mysqli_sql_exception $exception) {
       $returnValue = FALSE;
-      return $returnValue;
     }
+
+    return $returnValue;
   }
 
   function removeSpecificBlogData($blogIdentifier) {
@@ -106,16 +122,18 @@
       return $returnValue;
     }
 
-    $sql = "DELETE FROM Blogs WHERE id=$blogIdentifier";
+    try {
+      $sql = "DELETE FROM Blogs WHERE id=$blogIdentifier";
 
-    if ($conn -> query($sql) === TRUE) {
+      $conn -> query($sql);
+
       $returnValue = TRUE;
-      return $returnValue;
     }
-    else {
+    catch (mysqli_sql_exception $exception) {
       $returnValue = FALSE;
-      return $returnValue;
     }
+
+    return $returnValue;
   }
 
   function setSpecificBlogData($blogIdentifier, $blogTitle, $blogContent) {
@@ -128,16 +146,18 @@
       return $returnValue;
     }
 
-    $sql = "UPDATE Blogs SET blogtitle='$blogTitle', blogcontent='$blogContent' WHERE id=$blogIdentifier";
+    try {
+      $sql = "UPDATE Blogs SET blogtitle='$blogTitle', blogcontent='$blogContent' WHERE id=$blogIdentifier";
 
-    if ($conn -> query($sql) === TRUE) {
+      $conn -> query($sql);
+
       $returnValue = TRUE;
-      return $returnValue;
     }
-    else {
+    catch (mysqli_sql_exception $exception) {
       $returnValue = FALSE;
-      return $returnValue;
     }
+
+    return $returnValue;
   }
 
 ?>

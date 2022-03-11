@@ -13,29 +13,31 @@
       $conn = $databaseConnection[1];
     }
     else {
-      $returnValue = [FALSE];
-      return $returnValue;
-    }
-
-    $sql = "CREATE TABLE IF NOT EXISTS Comments (
-      id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      comment VARCHAR(60) NOT NULL,
-      blogid INT(6) UNSIGNED NOT NULL,
-      userid INT(6) UNSIGNED NOT NULL,
-      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      FOREIGN KEY (blogid) REFERENCES Blogs (id) ON DELETE CASCADE,
-      FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
-    )
-    ENGINE = INNODB";
-
-    if ($conn -> query($sql) === TRUE) {
-      $returnValue = TRUE;
-      return $returnValue;
-    }
-    else {
       $returnValue = FALSE;
       return $returnValue;
     }
+
+    try {
+      $sql = "CREATE TABLE IF NOT EXISTS Comments (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        comment VARCHAR(60) NOT NULL,
+        blogid INT(6) UNSIGNED NOT NULL,
+        userid INT(6) UNSIGNED NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (blogid) REFERENCES Blogs (id) ON DELETE CASCADE,
+        FOREIGN KEY (userid) REFERENCES Users (id) ON DELETE CASCADE
+      )
+      ENGINE = INNODB";
+
+      $conn -> query($sql);
+
+      $returnValue = TRUE;
+    }
+    catch (mysqli_sql_exception $exception) {
+      $returnValue = FALSE;
+    }
+
+    return $returnValue;
   }
 
   function getAllCommentsData() {
@@ -48,11 +50,16 @@
       return $returnValue;
     }
 
-    $sql = "SELECT id, comment, blogid, userid from Comments ORDER BY id";
+    try {
+      $sql = "SELECT id, comment, blogid, userid from Comments ORDER BY id";
 
-    $result = $conn -> query($sql);
+      $result = $conn -> query($sql);
 
-    $returnValue = [TRUE, $result];
+      $returnValue = [TRUE, $result];
+    }
+    catch (mysqli_sql_exception $exception) {
+      $returnValue = FALSE;
+    }
     return $returnValue;
   }
 
@@ -66,11 +73,16 @@
       return $returnValue;
     }
 
-    $sql = "SELECT id, comment, blogid, userid FROM Comments WHERE $commentField = $commentIdentifer ORDER BY id;";
+    try {
+      $sql = "SELECT id, comment, blogid, userid FROM Comments WHERE $commentField = $commentIdentifer ORDER BY id;";
 
-    $result = $conn -> query($sql);
+      $result = $conn -> query($sql);
 
-    $returnValue = [TRUE, $result];
+      $returnValue = [TRUE, $result];
+    }
+    catch (mysqli_sql_exception $exception) {
+      $returnValue = [FALSE];
+    }
     return $returnValue;
   }
 
@@ -84,16 +96,17 @@
       return $returnValue;
     }
 
-    $sql = "INSERT INTO Comments (comment, blogid, userid) VALUES ('$commentContent', $blogId, $userId);";
+    try {
+      $sql = "INSERT INTO Comments (comment, blogid, userid) VALUES ('$commentContent', $blogId, $userId);";
 
-    if ($conn -> query($sql) === TRUE) {
+      $conn -> query($sql);
+
       $returnValue = TRUE;
-      return $returnValue;
     }
-    else {
+    catch (mysqli_sql_exception $exception) {
       $returnValue = FALSE;
-      return $returnValue;
     }
+    return $returnValue;
   }
 
   function removeSpecificCommentData($commentIdentifier) {
@@ -106,16 +119,17 @@
       return $returnValue;
     }
 
-    $sql = "DELETE FROM Comments WHERE id=$commentIdentifier";
+    try {
+      $sql = "DELETE FROM Comments WHERE id=$commentIdentifier";
 
-    if ($conn -> query($sql) === TRUE) {
+      $conn -> query($sql);
+
       $returnValue = TRUE;
-      return $returnValue;
     }
-    else {
+    catch (mysqli_sql_exception $exception) {
       $returnValue = FALSE;
-      return $returnValue;
     }
+    return $returnValue;
   }
 
 ?>

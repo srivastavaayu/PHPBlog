@@ -60,14 +60,16 @@
 
               $response = addSpecificUser($createFullName, $createEmail, $createUsername, $createPassword);
 
-              if ($response) {
+              $info = $response[1];
+              if ($response[0] === TRUE) {
                 echo <<<EOD
-                  <script>
-                    alert("User has been registered successfully.");
-                    window.location.href = "/$apex_index_uri/controllers/login";
-                  </script>
+                <script>
+                  alert("$info");
+                  window.location.href = "/$apex_index_uri/controllers/login";
+                </script>
 EOD;
               }
+
             }
             else {
               $info = "Password and re-entered password do not match! Please try again.";

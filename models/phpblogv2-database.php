@@ -6,19 +6,21 @@
     $password = "";
     $databasename = "PHPBlogv2";
 
-    $conn = new mysqli($servername, $username, $password);
+    try {
+      $conn = new mysqli($servername, $username, $password);
 
-    $sql = "CREATE DATABASE IF NOT EXISTS $databasename";
+      $sql = "CREATE DATABASE IF NOT EXISTS $databasename";
 
-    if ($conn -> query($sql) === TRUE) {
+      $conn -> query($sql);
+
       $conn = new mysqli($servername, $username, $password, $databasename);
       $returnValue = [TRUE, $conn];
-      return $returnValue;
     }
-    else {
+    catch (mysqli_sql_exception $exception) {
       $returnValue = [FALSE];
-      return $returnValue;
+
     }
+    return $returnValue;
   }
 
 ?>

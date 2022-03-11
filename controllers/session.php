@@ -1,47 +1,50 @@
 <?php
 
-  session_start();
+session_start();
 
-  require_once("../general.php");
-  require_once("../models/users-table.php");
+require_once "../general.php";
+require_once "../models/users-table.php";
 
+function startSession()
+{
+  global $apex_index_uri;
 
-  function startSession() {
+  if (isset($_SESSION["LOGIN_USER"]) and $_SESSION["LOGIN_USER"] != -1) {
+    $loggedInUser = isset($_SESSION["LOGIN_USER"])
+      ? $_SESSION["LOGIN_USER"]
+      : null;
 
-    global $apex_index_uri;
+    $currentTime = time();
 
-    if (isset($_SESSION["LOGIN_USER"]) and $_SESSION["LOGIN_USER"] != -1) {
-      $loggedInUser = isset($_SESSION["LOGIN_USER"]) ? $_SESSION["LOGIN_USER"] : null;
+    $result = getSpecificUserLastActivityTimeData($loggedInUser);
 
-      $currentTime = time();
+    if ($result[0] === false) {
+      $returnValue = [false];
+      return $returnValue;
+    }
 
-      $result = getSpecificUserLastActivityTimeData($loggedInUser);
+    if ($result[1]->num_rows == 1) {
+      $row = $result[1]->fetch_assoc();
+      $lastActivityTimeOfLoggedInUser = $row["last_activity_time"];
+    }
 
-      if ($result[0] === FALSE) {
-        $returnValue = [FALSE];
-        return $returnValue;
-      }
+    if ($currentTime - $lastActivityTimeOfLoggedInUser > 900) {
+      header("Location: /" . $apex_index_uri . "/controllers/logout");
+    }
 
-      if ($result[1] -> num_rows == 1) {
-        $row = $result[1] -> fetch_assoc();
-        $lastActivityTimeOfLoggedInUser = $row["last_activity_time"];
-      }
+    $response = setSpecificUserLastActivityTimeData(
+      $loggedInUser,
+      $currentTime
+    );
 
-      if (($currentTime - $lastActivityTimeOfLoggedInUser) > 900) {
-        header('Location: /'.$apex_index_uri.'/controllers/logout');
-      }
-
-      $response = setSpecificUserLastActivityTimeData($loggedInUser, $currentTime);
-
-      if ($response === TRUE) {
-        $returnValue = [TRUE, $loggedInUser];
-        return $returnValue;
-      }
-      else {
-        $returnValue = [FALSE];
-        return $returnValue;
-      }
+    if ($response === true) {
+      $returnValue = [true, $loggedInUser];
+      return $returnValue;
+    } else {
+      $returnValue = [false];
+      return $returnValue;
     }
   }
+}
 
 ?>
